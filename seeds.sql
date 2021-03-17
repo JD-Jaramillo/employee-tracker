@@ -1,0 +1,13 @@
+USE employee_trackerDB;
+
+-- Inserting into department table
+INSERT INTO department(name)
+VALUES ('HR');
+
+-- Inserting into role table  
+INSERT INTO role(title, salary, department_id)
+VALUES ('HR Manager', 50000,  );
+
+-- Inserting into employee table 
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ('Mike', 'Edwards', );
