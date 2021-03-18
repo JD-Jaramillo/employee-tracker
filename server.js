@@ -111,7 +111,7 @@ const addDepartment = () => {
                 },
                 (err, newDepartment) => {
                     if (err) throw err;
-                    console.table(newDepartment);
+                    // console.table(newDepartment);
                     startPrompts();
                 })
         })
@@ -138,7 +138,7 @@ const addRole = () => {
                 },
                 (err, newDepartment) => {
                     if (err) throw err;
-                    console.table(newDepartment);
+                    // console.table(newDepartment);
                     startPrompts();
                 })
         })
@@ -195,8 +195,8 @@ const addEmployee = () => {
                 {
                     first_name: answer.firstname,
                     last_name: answer.lastname,
-                    role_id: answer.role,
-                    manager_id: answer.manager,
+                    // role_id: answer.role,
+                    // manager_id: answer.manager,
                 },
                 (err, res) => {
                     if (err) throw err;
