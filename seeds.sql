@@ -7,8 +7,8 @@ INSERT INTO department(name)
 VALUES ('Finance');
 
 -- Inserting into role table  
-INSERT INTO role(title, salary)
-VALUES ('HR Manager', 50);
+INSERT INTO role(title, salary, department_id)
+VALUES ('HR Manager', 50, 1);
 INSERT INTO role(title, salary)
 VALUES ('CFO', 95);
 

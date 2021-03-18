@@ -22,6 +22,7 @@ const startPrompts = () => {
                     'View all Employees by Department',
                     'View all employees by Manager',
                     'Add employee',
+                    'Add role',
                     'Add department',
                     'Remove Employee',
                     'Update Employee Role',
@@ -45,6 +46,9 @@ const startPrompts = () => {
                 }
                 case 'Add employee': {
                     return addEmployee();
+                }
+                case 'Add role': {
+                    return addRole();
                 }
                 case 'Add department': {
                     return addDepartment();
@@ -93,29 +97,68 @@ const viewAllEmpByManager = () => {
     })
 }
 const addDepartment = () => {
-    connection.query('SELECT * FROM `employee` WHERE ?', 'manager_id', (err, empByManager) => {
-        if (err) throw err;
-        console.table(empByManager);
-        startPrompts();
-    })
+    inquirer
+        .prompt([
+            {
+                name: 'departmentname',
+                type: 'input',
+                message: 'What is the name of the department you would like to add?',
+            }
+        ]).then((answer) => {
+            connection.query('INSERT INTO department SET ?',
+                {
+                    name: answer.departmentname,
+                },
+                (err, newDepartment) => {
+                    if (err) throw err;
+                    console.table(newDepartment);
+                    startPrompts();
+                })
+        })
+}
+
+const addRole = () => {
+    inquirer
+        .prompt([
+            {
+                name: 'rolename',
+                type: 'input',
+                message: 'What is the name of the role you would like to add?',
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is this roles\'s salary?',
+            },
+        ]).then((answer) => {
+            connection.query('INSERT INTO role SET ?',
+                {
+                    title: `${answer.rolename}`,
+                    salary: `${answer.salary}`,
+                },
+                (err, newDepartment) => {
+                    if (err) throw err;
+                    console.table(newDepartment);
+                    startPrompts();
+                })
+        })
 }
 
 const addEmployee = () => {
     inquirer
         .prompt([
             {
-                name: 'employee_firstname',
+                name: 'firstname',
                 type: 'input',
                 message: 'What is the first name of the employee you would like to add?',
             },
             {
-                name: 'employee_lastname',
+                name: 'lastname',
                 type: 'input',
                 message: 'What is the last name of the employee you would like to add?',
-
             },
             {
-                name: 'employee_role',
+                name: 'role',
                 type: 'list',
                 message: 'What is the employee\'s role?',
                 choices: ['Software Engineer',
@@ -132,7 +175,7 @@ const addEmployee = () => {
                 ]
             },
             {
-                name: 'employee_manager',
+                name: 'manager',
                 type: 'list',
                 message: 'Who is the employee\'s manager?',
                 choices: ['Ryan Spunik',
@@ -150,10 +193,10 @@ const addEmployee = () => {
             const query = connection.query(
                 'INSERT INTO employee SET ?',
                 {
-                    first_name: `${answer.employee_firstname}`,
-                    last_name: `${answer.employee_lastname}`,
-                    // role_id: `${answer.employee_role}`,
-                    // manager_id: `${answer.employee_manager}`,
+                    first_name: answer.firstname,
+                    last_name: answer.lastname,
+                    role_id: answer.role,
+                    manager_id: answer.manager,
                 },
                 (err, res) => {
                     if (err) throw err;
@@ -165,11 +208,25 @@ const addEmployee = () => {
 }
 
 const removeEmp = () => {
-    connection.query('SELECT * FROM employees', (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        startPrompts();
-    })
+    inquirer
+        .prompt([
+            {
+                name: 'firstname',
+                type: 'input',
+                message: 'What is the first name of the employee you would like to remove?',
+            },
+            {
+                name: 'lastname',
+                type: 'input',
+                message: 'What is the last name of the employee you would like to remove?',
+            },
+        ]).then((answers) => {
+            connection.query('DELETE FROM employees WHERE ?', [first_name = answers.firstname, last_name = answers.lastname], (err, res) => {
+                if (err) throw err;
+                console.table(res);
+                startPrompts();
+            })
+        })
 }
 
 const updateEmpRole = () => {
